@@ -4,15 +4,22 @@ import Answer from './Answer';
 
 class Question extends Component {
   render() {
+    const isClicked = this.state.isClicked;
     return (
         <div className='question-block'>
           <h4>Question</h4>
           <p>{this.props.question.text}</p>
-          <h4>Answers</h4>
+
           {this.state.answers.map((answer) => {
-            return(
-              <Answer answer={answer} key={answer.id} />
-            )
+            if (isClicked) {
+              return(
+                <Answer onClick={this.hideAnswers} answer={answer} key={answer.id} />
+              )
+            } else {
+              return(
+                <button onClick={this.handleClick} key={answer.id}>Show answers</button>
+              )
+            }
           })}
         </div>
       )
@@ -20,20 +27,15 @@ class Question extends Component {
 
   constructor(props) {
     super(props)
+    this.handleClick = this.handleClick.bind(this);
+    this.hideAnswers = this.hideAnswers.bind(this);
     this.state = {
-      question: '',
-      answers: [],
-      viewingQuestionId: null
+      isClicked: false,
+      answers: []
     }
   }
 
   componentDidMount() {
-    axios.get(`https://nameless-oasis-87770.herokuapp.com/questions/${this.props.question.id}.json`)
-    .then(response => {
-      this.setState({question: response.data})
-    })
-    .catch(error => console.log(error))
-
     axios.get(`https://nameless-oasis-87770.herokuapp.com/questions/${this.props.question.id}/answers.json`)
     .then(response => {
       this.setState({answers: response.data})
@@ -41,8 +43,12 @@ class Question extends Component {
     .catch(error => console.log(error))
   }
 
-  showAnswers = (id) => {
-    this.setState({viewingQuestionId: id})
+  handleClick() {
+    this.setState({isClicked: true});
+  }
+
+  hideAnswers() {
+    this.setState({isClicked: false});
   }
 }
 
