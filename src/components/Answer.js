@@ -6,7 +6,6 @@ class Answer extends Component {
       <div>
         <h4>Answer</h4>
         <p>{this.props.answer.text}</p>
-        <button onClick={this.hideAnswers} key={this.props.answer.id}>Hide answers</button>
       </div>
     )
   }

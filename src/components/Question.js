@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Answer from './Answer';
+import '../App.css';
 
 class Question extends Component {
   render() {
@@ -13,11 +14,11 @@ class Question extends Component {
           {this.state.answers.map((answer) => {
             if (isClicked) {
               return(
-                <Answer onClick={this.hideAnswers} answer={answer} key={answer.id} />
+                <Answer answer={answer} key={answer.id} />
               )
             } else {
               return(
-                <button onClick={this.handleClick} key={answer.id}>Show answers</button>
+                <button className="answerButton"onClick={this.handleClick} key={answer.id}>Show answers</button>
               )
             }
           })}
@@ -28,7 +29,6 @@ class Question extends Component {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this);
-    this.hideAnswers = this.hideAnswers.bind(this);
     this.state = {
       isClicked: false,
       answers: []
@@ -44,11 +44,7 @@ class Question extends Component {
   }
 
   handleClick() {
-    this.setState({isClicked: true});
-  }
-
-  hideAnswers() {
-    this.setState({isClicked: false});
+      this.setState({isClicked: true});
   }
 }
 
